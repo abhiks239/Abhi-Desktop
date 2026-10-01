@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>JARVIS Accountant</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; height: 100vh; display: flex; flex-direction: column;
+    background: #07111F; color: #fff;
+    font-family: "Segoe UI", Arial, sans-serif; padding: 16px;
+  }
+  h1 { margin: 0; font-size: 32px; }
+  .sub { color: #82B3CC; font-size: 12px; margin-bottom: 12px; }
+  #chat { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+  .msg { border-radius: 14px; padding: 13px; }
+  .msg.jarvis { background: #122335; }
+  .msg.you { background: #193B45; }
+  .role { color: #63D7FF; font-weight: bold; margin-bottom: 4px; }
+  .row { display: flex; gap: 8px; margin-top: 8px; }
+  input {
+    flex: 1; padding: 12px; border-radius: 8px; border: 1px solid #3a5568;
+    background: #0d1c2e; color: #fff; font-size: 15px;
+  }
+  button {
+    padding: 0 22px; border: none; border-radius: 20px;
+    background: #63D7FF; color: #07111F; font-weight: bold; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+  <h1>JARVIS</h1>
+  <div class="sub">ACCOUNTANT EDITION • v0.1 • DESKTOP</div>
+  <div id="chat"></div>
+  <div class="row">
+    <input id="input" placeholder="Ask JARVIS…" autofocus>
+    <button id="send">SEND</button>
+  </div>
+
+<script>
+  const chat = document.getElementById('chat');
+  const input = document.getElementById('input');
+
+  function add(role, text) {
+    const d = document.createElement('div');
+    d.className = 'msg ' + (role === 'JARVIS' ? 'jarvis' : 'you');
+    const r = document.createElement('div');
+    r.className = 'role';
+    r.textContent = role;
+    const t = document.createElement('div');
+    t.textContent = text;
+    d.appendChild(r);
+    d.appendChild(t);
+    chat.appendChild(d);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function respond(q) {
+    q = q.toLowerCase();
+    if (q.includes('gst'))
+      return 'GST module ready: GST treatment, ITC, RCM, e-invoice, e-way bill, HSN/SAC and reconciliation. The production engine will verify current official sources before live-law answers.';
+    if (q.includes('tds'))
+      return 'TDS module ready: applicability, provision/section, threshold, rate, deduction/payment timing and interest. I will use transaction date and current official sources.';
+    if (q.includes('excel'))
+      return 'Excel module ready: formulas, reconciliation, duplicates, MIS, pivots, VBA assistance and exception reports. Upload the workbook for analysis.';
+    if (q.includes('tally'))
+      return 'Tally module ready: vouchers, ledgers, GST/TDS, BRS, PDC, import/export, reconciliation and TDL workflows.';
+    if (/\bra\b/.test(q) || q.includes('audit'))
+      return 'RA Audit module ready: Agreement, clauses, BOQ, Change Orders, previous/current RA, quantity/rate/amount excess, EOT, compliance and audit-query generation.';
+    return 'Understood. The production JARVIS engine will route this request to the appropriate accounting tool.';
+  }
+
+  function send() {
+    const q = input.value.trim();
+    if (!q) return;
+    add('YOU', q);
+    add('JARVIS', respond(q));
+    input.value = '';
+  }
+
+  document.getElementById('send').addEventListener('click', send);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') send(); });
+
+  add('JARVIS', 'Good morning. I am JARVIS Accountant. Ask me about Accounts, Excel, Tally, GST, TDS or RA Bill Audit.');
+</script>
+</body>
+</html>
